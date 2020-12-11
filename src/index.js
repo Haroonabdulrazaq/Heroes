@@ -1,3 +1,11 @@
-const messageEl = document.createElement('div');
-messageEl.textContent = 'I was put here by JavaScript! with Phaser';
-document.body.appendChild(messageEl);
+import 'phaser';
+
+import { SimpleScene } from './scenes/simple-scene';
+
+let config = {
+  width: 680,
+  height: 400,
+  scene: [SimpleScene]
+};
+
+new Phaser.Game(config);

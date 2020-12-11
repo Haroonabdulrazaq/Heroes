@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports ={
   entry: {
@@ -24,5 +25,11 @@ module.exports ={
   },
   devServer: {
     contentBase: path.resolve(__dirname, 'build'),
-  }
+  }, 
+  plugins: [ 
+    new webpack.DefinePlugin({
+      'typeof CANVAS_RENDERER': JSON.stringify(true),
+      'typeof WEBGL_RENDERER': JSON.stringify(true)
+    })
+  ]
 }
