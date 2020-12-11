@@ -1,5 +1,5 @@
 {
-  "name": "Heroes",
+  "name": "heroes",
   "version": "1.0.0",
   "main": "index.js",
   "repository": "https://github.com/Haroonabdulrazaq/Heroes.git",
@@ -7,6 +7,10 @@
   "license": "MIT",
   "devDependencies": {
     "babel-core": "6",
+    "babel-loader": "^7.0.0",
     "webpack": "^3.0.0"
+  },
+  "dependencies": {
+    "phaser": "^3.0.0"
   }
 }
