@@ -1,0 +1,11 @@
+{
+  "name": "Heroes",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/Haroonabdulrazaq/Heroes.git",
+  "author": "Haroonabdulrazaq <Haroonabdulrazaq@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "webpack": "^3.0.0"
+  }
+}
