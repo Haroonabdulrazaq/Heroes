@@ -1,14 +1,16 @@
 import 'phaser';
-import { AUTO } from 'phaser';
+import config from './Config/config';
+import SimpleScene from './Scenes/simple-scene';
+import BootScene from './Scenes/BootScene';
+import GameScene from './Scenes/GameScene';
 
-import SimpleScene from './scenes/simple-scene';
-
-let config = {
-  type: Phaser.AUTO,
-  backgroundColor: '#022478',
-  width: 750,
-  height: 600,
-  scene: [SimpleScene]
-};
-
-new Phaser.Game(config);
+ 
+class Game extends Phaser.Game {
+  constructor () {
+    super(config); 
+    this.scene.add('SimpleScene', SimpleScene);
+    this.scene.start('SimpleScene');
+  }
+}
+ 
+window.game = new Game();
