@@ -1,10 +1,13 @@
 import 'phaser';
+import { AUTO } from 'phaser';
 
-import { SimpleScene } from './scenes/simple-scene';
+import SimpleScene from './scenes/simple-scene';
 
 let config = {
-  width: 680,
-  height: 400,
+  type: Phaser.AUTO,
+  backgroundColor: '#022478',
+  width: 750,
+  height: 600,
   scene: [SimpleScene]
 };
 
