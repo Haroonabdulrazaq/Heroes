@@ -77,12 +77,16 @@ export default class PreloaderScene extends Phaser.Scene {
   this.timedEvent = this.time.delayedCall(3000, this.ready, [], this);
   // All nedede assets
   //Simulating loading a lot of assets
- 
-  this.load.image('hero-logo', '../assets/hero-logo.png')
-  this.load.image('hero-logo', '../assets/hero-logo.png')
-  this.load.image('bg', '../assets/background.png')
-  this.load.image('sky-bg', '../assets/sky-background.png')
-  this.load.image('full-set', '../assets/full-set.png')
+
+    for(let i =0; i< 200; i++){
+      this.load.image('hero-logo'+i, '../assets/hero-logo.png')
+    }
+      // this.load.image('hero-logo', '../assets/hero-logo.png')
+      // this.load.image('hero-logo', '../assets/hero-logo.png')
+      // this.load.image('bg', '../assets/background.png')
+      // this.load.image('sky-bg', '../assets/sky-background.png')
+      // this.load.image('full-set', '../assets/full-set.png')
+
   }
 
   init () {
