@@ -38,7 +38,7 @@ export default class GameScene extends Phaser.Scene {
     this.anims.create({
       key: 'idle',
       frames: this.anims.generateFrameNumbers('hero', { start: 0, end: 3 }),
-      frameRate: 5,
+      frameRate: 0,
       repeat: -1
     });
     gameState.cursors = this.input.keyboard.createCursorKeys();
