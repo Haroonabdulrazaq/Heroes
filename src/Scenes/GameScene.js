@@ -13,13 +13,13 @@ export default class GameScene extends Phaser.Scene {
     this.load.image('bg', 'assets/background.png');
     this.load.image('platform1', '../assets/platform.png');
     this.load.image('platform2', '../assets/platform.png');
-    this.load.spritesheet('hero', '../assets/spritesheet.png', {frameWidth:250, frameHeight:210})
+    this.load.spritesheet('hero', '../assets/spritesheet.png', {frameWidth:240, frameHeight:210})
   }
  
   create () {
     this.add.image(500, 300, 'bg').setScale(2);
 
-    gameState.hero = this.physics.add.sprite(200,300, 'hero').setScale(0.5)
+    gameState.hero = this.physics.add.sprite(200,300, 'hero').setScale(0.3)
 
     const platforms = this.physics.add.staticGroup();
     platforms.create(250, 550, 'platform1').refreshBody();
@@ -41,12 +41,14 @@ export default class GameScene extends Phaser.Scene {
       frameRate: 0,
       repeat: -1
     });
+  
     gameState.cursors = this.input.keyboard.createCursorKeys();
   }
 
   update(){
     if(gameState.active){
       if(gameState.cursors.right.isDown){
+   
         gameState.hero.setVelocityX(350);
         gameState.hero.anims.play('run', true);
         gameState.hero.flipX = false;
@@ -58,8 +60,17 @@ export default class GameScene extends Phaser.Scene {
         gameState.hero.setVelocityX(0);
         gameState.hero.anims.play('idle', true);
       }
+
+      if ((gameState.cursors.space.isDown || gameState.cursors.up.isDown) && (gameState.hero.y >= 492)) {
+        gameState.hero.setVelocityY(-300);
+      }
     }
 
   }
-
+  // this.jumpAnim = this.anims.create({
+  //   key: 'jump',
+  //   frames: this.anims.generateFrameNames('hero', {prefix:'adventurer-jump-', suffix: '-1.3', start: 0, end: 5, zeroPad: 2}),
+  //   frameRate: 10,
+  //   repeat: -1
+  // });
 };
