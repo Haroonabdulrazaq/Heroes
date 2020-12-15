@@ -11,7 +11,7 @@ export default class GameScene extends Phaser.Scene {
     this.load.image('bg', 'assets/background.png');
     this.load.image('platform1', '../assets/platform.png');
     this.load.image('platform2', '../assets/platform.png');
-    this.load.spritesheet('hero', '../assets/spritesheet.png', {frameWidth:200, frameHeight:210}) 
+    this.load.spritesheet('hero', '../assets/spritesheet.png', {frameWidth:200, frameHeight:210})
   }
  
   create () {
@@ -24,7 +24,7 @@ export default class GameScene extends Phaser.Scene {
     platforms.create(600, 550, 'platform2').refreshBody();
 
     this.physics.add.collider(gameState.hero, platforms);
-    gameState.hero.setCollideWorldBounds(true);
+    gameState.hero.setCollideWorldBounds(true); 
   }
 
 };
