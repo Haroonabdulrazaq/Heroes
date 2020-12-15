@@ -11,13 +11,13 @@ export default class GameScene extends Phaser.Scene {
     this.load.image('bg', 'assets/background.png');
     this.load.image('platform1', '../assets/platform.png');
     this.load.image('platform2', '../assets/platform.png');
-    this.load.spritesheet('hero', '../assets/spritesheet.png', {frameWidth:10, frameHeight:250})
+    this.load.spritesheet('hero', '../assets/spritesheet.png', {frameWidth:200, frameHeight:210}) 
   }
  
   create () {
     this.add.image(500, 300, 'bg').setScale(2);
 
-    gameState.hero = this.physics.add.sprite(20,50, 'hero').setScale(0.5)
+    gameState.hero = this.physics.add.sprite(20,300, 'hero').setScale(0.5)
 
     const platforms = this.physics.add.staticGroup();
     platforms.create(250, 550, 'platform1').refreshBody();
