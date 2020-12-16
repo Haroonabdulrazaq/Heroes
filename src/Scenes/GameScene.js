@@ -44,15 +44,30 @@ export default class GameScene extends Phaser.Scene {
     this.cameras.main.startFollow(this.player);
     this.cameras.main.roundPixels = true;
 
-    gameState.coinBlink = this.physics.add.sprite(50, 142, 'coin-blink').setScale(1.5);
+    const coins = this.physics.add.group()
+
     this.anims.create({
       key: 'blink',
       frames: this.anims.generateFrameNumbers('coin-blink', { start: 0, end: 5 }),
       frameRate: 4,
       repeat: -1
     });
+    
+    function coinGen() {
+      const xCoord = Math.random() * 420
+      const yCoord = Math.random() * 400
+      // gameState.xCoord = xCoord
+      // gameState.yCoord = yCoord
+      coins.create(xCoord, yCoord, 'coin-blink').anims.play('blink', true)
+    } 
 
-    gameState.coinBlink.anims.play('blink', true)
+    // gameState.coinBlink = this.physics.add.sprite(50, 142, 'coin-blink').setScale(1.5);
+  
+   
+    for(let i=0; i< 20; i++){
+      coinGen()
+   }
+
 
 
     //  animation with key 'left', we don't need left and right as we will use one and flip the sprite
