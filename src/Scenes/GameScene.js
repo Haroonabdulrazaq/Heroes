@@ -9,15 +9,9 @@ export default class GameScene extends Phaser.Scene {
   }
   
   preload () {
-    // load images
-    // this.load.image('bg', 'assets/background1.png');
-    // this.load.image('platform1', '../assets/platform.png');
-    // this.load.image('platform2', '../assets/platform.png');
-    //  this.load.spritesheet('hero', '../assets/spritesheet.png', {frameWidth:240, frameHeight:210})
-           // map tiles
-    this.load.image('tiles', 'assets/map/spritesheet.png');
     this.load.spritesheet('coin-blink', 'assets/Full Coins.png', { frameWidth: 16, frameHeight: 15 })
-
+    // map tiles
+    this.load.image('tiles', 'assets/map/spritesheet.png');
     // map in json format
       this.load.tilemapTiledJSON('map', 'assets/map/map.json');
     
@@ -33,43 +27,37 @@ export default class GameScene extends Phaser.Scene {
     var obstacles = map.createStaticLayer('Obstacles', tiles, 0, 0);
     obstacles.setCollisionByExclusion([-1]);
  
-    this.player = this.physics.add.sprite(50, 100, 'player', 6);
+    gameState.player = this.physics.add.sprite(100, 150, 'player', 6);
     this.physics.world.bounds.width = map.widthInPixels;
     this.physics.world.bounds.height = map.heightInPixels;
-    this.player.setCollideWorldBounds(true);
-    // this.cursors = this.input.keyboard.createCursorKeys();
+    gameState.player.setCollideWorldBounds(true);
+  
 
-
-    this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-    this.cameras.main.startFollow(this.player);
-    this.cameras.main.roundPixels = true;
-
-    const coins = this.physics.add.group()
+    const coins = this.physics.add.group();
 
     this.anims.create({
       key: 'blink',
+      delay:500,
       frames: this.anims.generateFrameNumbers('coin-blink', { start: 0, end: 5 }),
       frameRate: 4,
       repeat: -1
     });
-    
-    function coinGen() {
-      const xCoord = Math.random() * 420
-      const yCoord = Math.random() * 400
-      // gameState.xCoord = xCoord
-      // gameState.yCoord = yCoord
-      coins.create(xCoord, yCoord, 'coin-blink').anims.play('blink', true)
-    } 
 
-    // gameState.coinBlink = this.physics.add.sprite(50, 142, 'coin-blink').setScale(1.5);
+    function coinGen() {
+      const xCoord = (Math.random() * 420) + 20
+      const yCoord = (Math.random() * 420) + 20;
+       coins.create(xCoord, yCoord, 'coin-blink').anims.play('blink', true)
+    } 
   
    
     for(let i=0; i< 20; i++){
       coinGen()
    }
 
-
-
+  //  this.physics.add.overlap(coins, gameState.player, (coin) => {
+  //    coin.destroy()
+  //  })
+ 
     //  animation with key 'left', we don't need left and right as we will use one and flip the sprite
     this.anims.create({
       key: 'left',
@@ -77,7 +65,7 @@ export default class GameScene extends Phaser.Scene {
       frameRate: 10,
       repeat: -1
   });
-  
+
   // animation with key 'right'
   this.anims.create({
       key: 'right',
@@ -85,12 +73,14 @@ export default class GameScene extends Phaser.Scene {
       frameRate: 10,
       repeat: -1
   });
+    // animation with key 'up'
   this.anims.create({
       key: 'up',
       frames: this.anims.generateFrameNumbers('player', { frames: [2, 8, 2, 14]}),
       frameRate: 10,
       repeat: -1
   });
+    // animation with key 'down'
   this.anims.create({
       key: 'down',
       frames: this.anims.generateFrameNumbers('player', { frames: [ 0, 6, 0, 12 ] }),
@@ -98,7 +88,8 @@ export default class GameScene extends Phaser.Scene {
       repeat: -1
   });
 	
-  this.physics.add.collider(this.player, obstacles);
+  this.physics.add.collider(gameState.player, obstacles);
+  this.physics.add.collider(gameState.player, coins);
     // this.add.image(500, 300, 'bg');
 
     // gameState.hero = this.physics.add.sprite(20,300, 'hero').setScale(0.3)
@@ -110,56 +101,60 @@ export default class GameScene extends Phaser.Scene {
     //  this.physics.add.collider(gameState.hero, platforms);
     //  gameState.hero.setCollideWorldBounds(true);
 
-    this.anims.create({
-      key: 'run',
-      frames: this.anims.generateFrameNumbers('hero', { start: 0, end: 3 }),
-      frameRate: 5,
-      repeat: -1
-    });
+    // this.anims.create({
+    //   key: 'run',
+    //   frames: this.anims.generateFrameNumbers('hero', { start: 0, end: 3 }),
+    //   frameRate: 5,
+    //   repeat: -1
+    // });
 
-    this.anims.create({
-      key: 'idle',
-      frames: this.anims.generateFrameNumbers('hero', { start: 0, end: 3 }),
-      frameRate: 0,
-      repeat: -1
-    });
+    // this.anims.create({
+    //   key: 'idle',
+    //   frames: this.anims.generateFrameNumbers('hero', { start: 0, end: 3 }),
+    //   frameRate: 0,
+    //   repeat: -1
+    // });
   
-     this.cursors = this.input.keyboard.createCursorKeys();
+     gameState.cursors = this.input.keyboard.createCursorKeys();
+
+    this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+    this.cameras.main.startFollow(gameState.player);
+    this.cameras.main.roundPixels = true;
   }
 
   update(time, delta){
-    this.player.body.setVelocity(0);
+    gameState.player.body.setVelocity(0);
 
         // Horizontal movement
-        if (this.cursors.left.isDown)
+        if (gameState.cursors.left.isDown)
         {
-            this.player.body.setVelocityX(-100);
-            this.player.anims.play('left', true);
-            this.player.flipX = true;
+            gameState.player.body.setVelocityX(-100);
+            gameState.player.anims.play('left', true);
+            gameState.player.flipX = true;
         }
-        else if (this.cursors.right.isDown)
+        else if (gameState.cursors.right.isDown)
         {
-            this.player.body.setVelocityX(100);
-            this.player.anims.play('right', true);
-            this.player.flipX = false;
+          gameState.player.body.setVelocityX(100);
+          gameState.player.anims.play('right', true);
+          gameState.player.flipX = false;
         }else{
-          this.player.body.setVelocityX(0);
-          this.player.anims.stop();
+          gameState.player.body.setVelocityX(0);
+          gameState.player.anims.stop();
         }
  
         // Vertical movement
-        if (this.cursors.up.isDown)
+        if (gameState.cursors.up.isDown)
         {
-            this.player.body.setVelocityY(-100);
-            this.player.anims.play('up', true);
+            gameState.player.body.setVelocityY(-100);
+            gameState.player.anims.play('up', true);
         }
-        else if (this.cursors.down.isDown)
+        else if (gameState.cursors.down.isDown)
         {
-            this.player.body.setVelocityY(100);
-            this.player.anims.play('down', true);
+            gameState.player.body.setVelocityY(100);
+            gameState.player.anims.play('down', true);
         }else{
-          this.player.body.setVelocityY(0);
-          this.player.anims.stop();
+          gameState.player.body.setVelocityY(0);
+          gameState.player.anims.stop();
         }
 
 
