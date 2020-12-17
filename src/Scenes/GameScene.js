@@ -117,13 +117,33 @@ export default class GameScene extends Phaser.Scene {
   
      gameState.cursors = this.input.keyboard.createCursorKeys();
 
+
     this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
     this.cameras.main.startFollow(gameState.player);
     this.cameras.main.roundPixels = true;
+
+    this.spawns = this.physics.add.group({ classType: Phaser.GameObjects.Zone });
+    for(var i = 0; i < 3; i++) {
+        var x = Phaser.Math.RND.between(0, this.physics.world.bounds.width);
+        var y = Phaser.Math.RND.between(0, this.physics.world.bounds.height);
+        // parameters are x, y, width, height
+        this.spawns.create(x, y, 20, 20);            
+    }        
+    this.physics.add.overlap(gameState.player, this.spawns, this.onMeetEnemy, false, this);
+
+    function onMeetEnemy(player, zone) {        
+      zone.x = Phaser.Math.RND.between(0, this.physics.world.bounds.width);
+      zone.y = Phaser.Math.RND.between(0, this.physics.world.bounds.height);  
+  
+      // shake the Effect
+      this.cameras.main.shake(300);
+      camera.flash(duration);
+      // camera.fade(duration);
+    }
   }
 
   update(time, delta){
-    gameState.player.body.setVelocity(0);
+    // gameState.player.body.setVelocity(0);
 
         // Horizontal movement
         if (gameState.cursors.left.isDown)
