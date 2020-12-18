@@ -9,14 +9,14 @@ export default class GameScene extends Phaser.Scene {
   }
   
   preload () {
-    this.load.spritesheet('coin-blink', 'assets/Full Coins.png', { frameWidth: 16, frameHeight: 15 })
+    this.load.spritesheet('coin', 'assets/Full Coins.png', { frameWidth: 16, frameHeight: 15 })
     // map tiles
     this.load.image('tiles', 'assets/map/spritesheet.png');
     // map in json format
-      this.load.tilemapTiledJSON('map', 'assets/map/map.json');
-    
+    this.load.tilemapTiledJSON('map', 'assets/map/map.json');
     // our two characters
     this.load.spritesheet('player', 'assets/RPG_assets.png', { frameWidth: 16, frameHeight: 16 });
+    
   }
  
   create () {
@@ -33,12 +33,12 @@ export default class GameScene extends Phaser.Scene {
     gameState.player.setCollideWorldBounds(true);
   
 
-    const coins = this.physics.add.group();
+    gameState.coins = this.physics.add.group();
 
     this.anims.create({
       key: 'blink',
-      delay:500,
-      frames: this.anims.generateFrameNumbers('coin-blink', { start: 0, end: 5 }),
+      delay:1000,
+      frames: this.anims.generateFrameNumbers('coin', { start: 0, end: 5 }),
       frameRate: 4,
       repeat: -1
     });
@@ -46,7 +46,7 @@ export default class GameScene extends Phaser.Scene {
     function coinGen() {
       const xCoord = (Math.random() * 420) + 20
       const yCoord = (Math.random() * 420) + 20;
-       coins.create(xCoord, yCoord, 'coin-blink').anims.play('blink', true)
+      gameState.coins.create(xCoord, yCoord, 'coin').anims.play('blink', true)
     } 
   
    
@@ -54,9 +54,11 @@ export default class GameScene extends Phaser.Scene {
       coinGen()
    }
 
-  //  this.physics.add.overlap(coins, gameState.player, (coin) => {
-  //    coin.destroy()
-  //  })
+   gameState.score =0
+   this.physics.add.collider(gameState.coins, gameState.player, (coin) => {
+     gameState.score += 10
+     coin.destroy()
+   })
  
     //  animation with key 'left', we don't need left and right as we will use one and flip the sprite
     this.anims.create({
@@ -89,7 +91,7 @@ export default class GameScene extends Phaser.Scene {
   });
 	
   this.physics.add.collider(gameState.player, obstacles);
-  this.physics.add.collider(gameState.player, coins);
+  // this.physics.add.collider(gameState.player, coins);
     // this.add.image(500, 300, 'bg');
 
     // gameState.hero = this.physics.add.sprite(20,300, 'hero').setScale(0.3)
@@ -145,37 +147,39 @@ export default class GameScene extends Phaser.Scene {
   update(time, delta){
     // gameState.player.body.setVelocity(0);
 
+     // Vertical movement
+     if (gameState.cursors.up.isDown)
+     {
+         gameState.player.setVelocityY(-100);
+         gameState.player.anims.play('up', true);
+     }
+     else if (gameState.cursors.down.isDown)
+     {
+         gameState.player.setVelocityY(100);
+         gameState.player.anims.play('down', true);
+     }else{
+       gameState.player.setVelocityY(0);
+       gameState.player.anims.stop();
+     }
+
         // Horizontal movement
         if (gameState.cursors.left.isDown)
         {
-            gameState.player.body.setVelocityX(-100);
+            gameState.player.setVelocityX(-100);
             gameState.player.anims.play('left', true);
             gameState.player.flipX = true;
         }
         else if (gameState.cursors.right.isDown)
         {
-          gameState.player.body.setVelocityX(100);
+          gameState.player.setVelocityX(100);
           gameState.player.anims.play('right', true);
           gameState.player.flipX = false;
         }else{
-          gameState.player.body.setVelocityX(0);
+          gameState.player.setVelocityX(0);
           gameState.player.anims.stop();
         }
  
-        // Vertical movement
-        if (gameState.cursors.up.isDown)
-        {
-            gameState.player.body.setVelocityY(-100);
-            gameState.player.anims.play('up', true);
-        }
-        else if (gameState.cursors.down.isDown)
-        {
-            gameState.player.body.setVelocityY(100);
-            gameState.player.anims.play('down', true);
-        }else{
-          gameState.player.body.setVelocityY(0);
-          gameState.player.anims.stop();
-        }
+       
 
 
         // if (this.gameState.cursors.left.isDown)
