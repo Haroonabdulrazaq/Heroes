@@ -62,6 +62,7 @@ export default class BootScene extends Phaser.Scene {
     // load resources
     this.load.image('dragonblue', 'assets/dragonblue.png');
     this.load.image('dragonorange', 'assets/dragonorange.png');
+    this.load.spritesheet('player', 'assets/RPG_assets.png', { frameWidth: 16, frameHeight: 16 });
   }
  
   create () {
