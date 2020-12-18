@@ -67,7 +67,7 @@ var Menu = new Phaser.Class({
   confirm: function() {
       // wen the player confirms his slection, do the action
   }, 
-
+// clear menu and remove all menu items
   clear: function() {
     for(var i = 0; i < this.menuItems.length; i++) {
         this.menuItems[i].destroy();
@@ -75,6 +75,7 @@ var Menu = new Phaser.Class({
     this.menuItems.length = 0;
     this.menuItemIndex = 0;
   },
+   // recreate the menu items
   remap: function(units) {
       this.clear();        
       for(var i = 0; i < units.length; i++) {
